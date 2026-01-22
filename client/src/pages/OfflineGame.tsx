@@ -76,8 +76,25 @@ export default function OfflineGame() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col p-4 animate-neon-cycle">
+    <div className="min-h-screen bg-black text-white flex flex-col p-4 animate-neon-cycle overflow-hidden">
       <div className="page-border-glow" />
+      
+      {/* Falling Cubes Background */}
+      <div className="falling-cubes-container">
+        {[...Array(15)].map((_, i) => (
+          <div 
+            key={i} 
+            className="cube"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDuration: `${Math.random() * 10 + 5}s`,
+              animationDelay: `${Math.random() * 5}s`,
+              width: `${Math.random() * 30 + 10}px`,
+              height: `${Math.random() * 30 + 10}px`,
+            }}
+          />
+        ))}
+      </div>
       
       <header className="flex flex-col items-center glass-panel p-4 rounded-xl mb-6 max-w-6xl mx-auto w-full gap-4 relative z-10 neon-border">
         <div className="flex items-center justify-between w-full">

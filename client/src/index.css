@@ -56,7 +56,7 @@
     @apply bg-black text-foreground antialiased;
     font-family: var(--font-body);
     background-color: #000;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -80,6 +80,47 @@
 
   .animate-neon-cycle {
     animation: neon-color-cycle 20s linear infinite;
+  }
+
+  /* Falling Cubes Background */
+  .falling-cubes-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -5;
+    overflow: hidden;
+  }
+
+  .cube {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--neon-cycle);
+    box-shadow: 0 0 10px var(--neon-cycle);
+    opacity: 0.3;
+    top: -50px;
+    animation: fall linear infinite;
+    transition: border-color 1s ease, box-shadow 1s ease;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.3;
+    }
+    90% {
+      opacity: 0.3;
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
   }
 }
 
