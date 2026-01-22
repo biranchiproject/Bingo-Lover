@@ -55,7 +55,12 @@ export const WS_EVENTS = {
 export type GameState = {
   roomCode: string;
   status: 'waiting' | 'playing' | 'finished';
-  players: { uid: string; name: string; ready: boolean }[];
+  players: { 
+    uid: string; 
+    name: string; 
+    ready: boolean;
+    board?: number[][]; // Individual boards for each player
+  }[];
   currentNumber: number | null;
   numbersCalled: number[];
   winner: string | null;

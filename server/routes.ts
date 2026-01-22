@@ -21,6 +21,45 @@ function generateBingoNumber(calledNumbers: number[]): number | null {
   return num;
 }
 
+function generatePlayerBoard(): number[][] {
+  const board: number[][] = [];
+  const ranges = [
+    [1, 15],  // B
+    [16, 30], // I
+    [31, 45], // N
+    [46, 60], // G
+    [61, 75]  // O
+  ];
+
+  const columns: number[][] = [];
+  for (let i = 0; i < 5; i++) {
+    const column: number[] = [];
+    const [min, max] = ranges[i];
+    while (column.length < 5) {
+      const num = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (!column.includes(num)) {
+        column.push(num);
+      }
+    }
+    columns.push(column);
+  }
+
+  // Transpose columns to rows
+  for (let r = 0; r < 5; r++) {
+    const row: number[] = [];
+    for (let c = 0; c < 5; c++) {
+      // Middle cell is FREE (0)
+      if (r === 2 && c === 2) {
+        row.push(0);
+      } else {
+        row.push(columns[c][r]);
+      }
+    }
+    board.push(row);
+  }
+  return board;
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -110,6 +149,12 @@ export async function registerRoutes(
         if (room.gameState.status !== 'playing') {
           room.gameState.status = 'playing';
           room.gameState.numbersCalled = [];
+          
+          // Generate unique boards for all players
+          room.gameState.players = room.gameState.players.map(p => ({
+            ...p,
+            board: generatePlayerBoard()
+          }));
           
           io.to(roomCode).emit(WS_EVENTS.START_GAME, room.gameState);
 
