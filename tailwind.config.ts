@@ -75,6 +75,13 @@ export default {
           foreground: "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
           border: "var(--sidebar-accent-border)"
         },
+        neon: {
+          blue: "var(--neon-blue)",
+          pink: "var(--neon-pink)",
+          yellow: "var(--neon-yellow)",
+          purple: "var(--neon-purple)",
+          green: "var(--neon-green)",
+        },
         status: {
           online: "rgb(34 197 94)",
           away: "rgb(245 158 11)",
@@ -86,6 +93,8 @@ export default {
         sans: ["var(--font-sans)"],
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
+        display: ["var(--font-display)"],
+        body: ["var(--font-body)"],
       },
       keyframes: {
         "accordion-down": {
