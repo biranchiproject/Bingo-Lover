@@ -1,0 +1,107 @@
+Create a complete OFFLINE SINGLE PLAYER Bingo Game
+using HTML, CSS, and JavaScript.
+
+========================
+1. LOGIN SCREEN
+========================
+- Show a login screen first.
+- Input field:
+  - Player Name
+- Generate a unique UID for the player.
+- Save player data in localStorage.
+- Start Game button.
+
+========================
+2. BINGO BOARD RULES
+========================
+- Bingo board size: 5x5.
+- Numbers range: 1 to 25.
+- Generate ONE Bingo board only.
+- All numbers must be visible from the start.
+- Only ONE Bingo board should appear on screen.
+
+========================
+3. VALID BINGO PATTERNS (STRICT)
+========================
+Bingo is counted ONLY when exactly 5 numbers are completed in:
+
+- Straight Row (left to right)
+- Straight Column (top to bottom)
+- Perfect Diagonal Cross (X shape)
+
+DO NOT allow:
+- Zigzag patterns
+- Half cross
+- Random shapes
+- 2 up + 2 down patterns
+
+Each completed valid pattern cuts one letter
+in order: B → I → N → G → O.
+
+When all letters are cut, show BINGO.
+
+========================
+4. GAME UI STRUCTURE
+========================
+- Full screen layout.
+- Top panel:
+  - Player Name
+  - UID
+  - B I N G O letters with cut animation
+- Center:
+  - Currently called number display
+  - Bingo board (5x5)
+
+========================
+5. VISUAL DESIGN (NEON STYLE)
+========================
+- Background:
+  - Pure black
+  - Slow animated glowing gradient
+- Bingo board:
+  - Neon glow animation
+  - Board color cycles slowly:
+    Neon Yellow → Red → Electric Blue → Purple
+  - Border color synced with board color
+- Numbers:
+  - Alternate neon colors
+  - Selected numbers glow and pulse
+- No fast flashing (eye-safe)
+
+========================
+6. GAME LOGIC
+========================
+- Random number calling from 1 to 25.
+- No number repetition.
+- When a number is called:
+  - Automatically mark it on the board.
+- After each call:
+  - Check only valid Bingo patterns.
+- When BINGO is completed:
+  - Show glowing win animation
+  - Display message: "🎉 BINGO! YOU WIN 🎉"
+
+========================
+7. CONTROLS
+========================
+- Next Number button
+- Restart Game button
+
+========================
+8. TECHNICAL REQUIREMENTS
+========================
+- Fully offline.
+- Beginner-friendly, well-commented code.
+- Clean structure:
+  - index.html
+  - style.css
+  - script.js
+- Responsive for mobile and desktop.
+
+========================
+OUTPUT
+========================
+Generate:
+- index.html
+- style.css
+- script.js
