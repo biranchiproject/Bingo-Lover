@@ -1,8 +1,9 @@
 import { z } from 'zod';
-import { insertUserSchema, users } from './schema';
+import { insertUserSchema, insertRoomSchema, users, rooms } from './schema';
 
 export const errorSchemas = {
   notFound: z.object({ message: z.string() }),
+  conflict: z.object({ message: z.string() }),
 };
 
 export const api = {
@@ -21,6 +22,25 @@ export const api = {
       path: '/api/users/:uid',
       responses: {
         200: z.custom<typeof users.$inferSelect>(),
+        404: errorSchemas.notFound,
+      },
+    },
+  },
+  rooms: {
+    create: {
+      method: 'POST' as const,
+      path: '/api/rooms',
+      input: z.object({ hostId: z.string() }),
+      responses: {
+        201: z.object({ code: z.string() }),
+      },
+    },
+    join: {
+      method: 'POST' as const,
+      path: '/api/rooms/join',
+      input: z.object({ code: z.string(), uid: z.string() }),
+      responses: {
+        200: z.custom<typeof rooms.$inferSelect>(),
         404: errorSchemas.notFound,
       },
     },
