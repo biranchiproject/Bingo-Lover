@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { NeonButton } from "@/components/NeonButton";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
-import { Globe } from "lucide-react";
+import { Gamepad2, Globe } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { api } from "@shared/routes";
 import { useMutation } from "@tanstack/react-query";
@@ -110,6 +110,17 @@ export default function Landing() {
             </div>
 
             <div className="space-y-3">
+              <NeonButton 
+                onClick={() => setLocation('/offline')} 
+                className="w-full flex items-center justify-center gap-2"
+                variant="secondary"
+              >
+                <Gamepad2 className="w-5 h-5" />
+                Offline Mode (PvP)
+              </NeonButton>
+
+              <div className="h-px bg-white/10 my-4" />
+
               <NeonButton 
                 onClick={() => createRoomMutation.mutate()} 
                 className="w-full flex items-center justify-center gap-2"
