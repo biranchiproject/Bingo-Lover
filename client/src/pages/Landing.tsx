@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { NeonButton } from "@/components/NeonButton";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
-import { Gamepad2, Globe, Users } from "lucide-react";
+import { Globe } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { api } from "@shared/routes";
 import { useMutation } from "@tanstack/react-query";
@@ -25,7 +25,8 @@ export default function Landing() {
 
   const createRoomMutation = useMutation({
     mutationFn: async () => {
-      const res = await apiRequest("POST", api.rooms.create.path, { hostId: useAuth().uid });
+      const { uid } = JSON.parse(localStorage.getItem('user_profile') || '{}');
+      const res = await apiRequest("POST", api.rooms.create.path, { hostId: uid });
       return res.json();
     },
     onSuccess: (data) => {
@@ -109,17 +110,6 @@ export default function Landing() {
             </div>
 
             <div className="space-y-3">
-              <NeonButton 
-                onClick={() => setLocation('/offline')} 
-                className="w-full flex items-center justify-center gap-2"
-                variant="secondary"
-              >
-                <Gamepad2 className="w-5 h-5" />
-                Offline Mode
-              </NeonButton>
-              
-              <div className="h-px bg-white/10 my-4" />
-
               <NeonButton 
                 onClick={() => createRoomMutation.mutate()} 
                 className="w-full flex items-center justify-center gap-2"

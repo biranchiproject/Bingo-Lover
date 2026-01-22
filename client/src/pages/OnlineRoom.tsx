@@ -37,6 +37,15 @@ export default function OnlineRoom() {
     if (gameState?.status === 'waiting') {
       resetGame();
     }
+    
+    // Sync individual board from server
+    if (gameState?.status === 'playing' && gameState.players) {
+      const currentPlayer = gameState.players.find(p => p.uid === uid);
+      if (currentPlayer?.board) {
+        setCard(currentPlayer.board);
+      }
+    }
+
     if (gameState?.winner) {
       playWin();
       confetti({
