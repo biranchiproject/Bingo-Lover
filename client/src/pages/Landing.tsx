@@ -111,17 +111,6 @@ export default function Landing() {
 
             <div className="space-y-3">
               <NeonButton 
-                onClick={() => setLocation('/offline')} 
-                className="w-full flex items-center justify-center gap-2"
-                variant="secondary"
-              >
-                <Gamepad2 className="w-5 h-5" />
-                Offline Mode (PvP)
-              </NeonButton>
-
-              <div className="h-px bg-white/10 my-4" />
-
-              <NeonButton 
                 onClick={() => createRoomMutation.mutate()} 
                 className="w-full flex items-center justify-center gap-2"
                 disabled={createRoomMutation.isPending}
