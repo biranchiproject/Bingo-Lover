@@ -47,13 +47,15 @@
 }
 
 @layer base {
+  :root {
+    --neon-cycle: #ffee00;
+    --neon-contrast: #00f3ff;
+  }
+
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-black text-foreground antialiased;
     font-family: var(--font-body);
-    background-color: #050505;
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.1), transparent 25%);
+    background-color: #000;
     overflow-x: hidden;
   }
 
@@ -63,13 +65,34 @@
   }
 }
 
+@layer utilities {
+  .page-border-glow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    border: 4px solid var(--neon-cycle);
+    box-shadow: 
+      inset 0 0 20px var(--neon-cycle),
+      0 0 20px var(--neon-cycle);
+    z-index: 9999;
+    transition: border-color 1s ease, box-shadow 1s ease;
+  }
+
+  .animate-neon-cycle {
+    animation: neon-color-cycle 20s linear infinite;
+  }
+}
+
 @layer components {
   .neon-text {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px var(--neon-cycle), 0 0 30px var(--neon-cycle);
+    transition: text-shadow 1s ease;
   }
   
   .neon-border {
-    box-shadow: 0 0 5px var(--neon-purple), inset 0 0 5px var(--neon-purple);
+    border-color: var(--neon-cycle);
+    box-shadow: 0 0 15px var(--neon-cycle), inset 0 0 10px var(--neon-cycle);
+    transition: border-color 1s ease, box-shadow 1s ease;
   }
 
   .glass-panel {
@@ -82,29 +105,51 @@
     font-family: var(--font-display);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--neon-contrast);
+    transition: color 1s ease, border-color 1s ease, box-shadow 1s ease, background 0.3s ease;
   }
 
   .bingo-cell:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
     z-index: 10;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
   }
 
   .bingo-cell.marked {
-    background: rgba(188, 19, 254, 0.3);
-    border-color: var(--neon-purple);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--neon-cycle);
     color: white;
-    box-shadow: 0 0 15px var(--neon-purple), inset 0 0 10px var(--neon-purple);
-    text-shadow: 0 0 5px white;
+    box-shadow: 0 0 20px var(--neon-cycle), inset 0 0 10px var(--neon-cycle);
+    text-shadow: 0 0 10px var(--neon-cycle);
   }
   
   .bingo-cell.winning-line {
-    background: rgba(0, 243, 255, 0.5);
-    border-color: var(--neon-blue);
-    box-shadow: 0 0 25px var(--neon-blue), inset 0 0 15px var(--neon-blue);
+    background: var(--neon-cycle);
+    border-color: #fff;
+    color: #000;
+    box-shadow: 0 0 40px var(--neon-cycle), inset 0 0 20px #fff;
     animation: pulse-win 1.5s infinite;
   }
+}
+
+@keyframes neon-color-cycle {
+  0%, 100% { --neon-cycle: #ffee00; --neon-contrast: #00f3ff; } /* Yellow -> Cyan */
+  20% { --neon-cycle: #ff0000; --neon-contrast: #0aff00; }     /* Red -> Green */
+  40% { --neon-cycle: #00f3ff; --neon-contrast: #ffee00; }     /* Blue -> Yellow */
+  60% { --neon-cycle: #bc13fe; --neon-contrast: #0aff00; }     /* Purple -> Green */
+  80% { --neon-cycle: #0aff00; --neon-contrast: #ff00ff; }     /* Green -> Pink */
+}
+
+@property --neon-cycle {
+  syntax: '<color>';
+  initial-value: #ffee00;
+  inherits: true;
+}
+
+@property --neon-contrast {
+  syntax: '<color>';
+  initial-value: #00f3ff;
+  inherits: true;
 }
 
 @keyframes pulse-win {

@@ -76,10 +76,10 @@ export default function OfflineGame() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col p-4">
-      <div className="fixed inset-0 aurora-gradient opacity-20 -z-10" />
+    <div className="min-h-screen bg-black text-white flex flex-col p-4 animate-neon-cycle">
+      <div className="page-border-glow" />
       
-      <header className="flex flex-col items-center glass-panel p-4 rounded-xl mb-6 max-w-6xl mx-auto w-full gap-4">
+      <header className="flex flex-col items-center glass-panel p-4 rounded-xl mb-6 max-w-6xl mx-auto w-full gap-4 relative z-10 neon-border">
         <div className="flex items-center justify-between w-full">
           <button onClick={() => setLocation("/")} className="p-2 hover:bg-white/10 rounded-full transition-colors">
             <ArrowLeft className="w-5 h-5" />
@@ -119,8 +119,10 @@ export default function OfflineGame() {
       ) : (
         <main className="flex-1 max-w-2xl mx-auto w-full flex flex-col items-center">
           {/* Single Board */}
-          <div className="flex flex-col items-center space-y-4 w-full">
-            <BingoBoard card={board} marked={marked} onCellClick={handleCellClick} disabled={winner} />
+          <div className="flex flex-col items-center space-y-4 w-full relative z-10">
+            <div className="neon-border p-2 rounded-xl bg-black/40">
+              <BingoBoard card={board} marked={marked} onCellClick={handleCellClick} disabled={winner} />
+            </div>
           </div>
 
           {/* Winner overlay */}
