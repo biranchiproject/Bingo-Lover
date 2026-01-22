@@ -11,15 +11,13 @@ import useSound from "use-sound";
 export default function OfflineGame() {
   const [_, setLocation] = useLocation();
   
-  // Game State for 2 players
+  // Game State for single player
   const [gameState, setGameState] = useState<'setup' | 'playing' | 'winner'>('setup');
-  const [p1Board, setP1Board] = useState<number[][]>([]);
-  const [p2Board, setP2Board] = useState<number[][]>([]);
-  const [markedP1, setMarkedP1] = useState<boolean[][]>(Array(5).fill(null).map(() => Array(5).fill(false)));
-  const [markedP2, setMarkedP2] = useState<boolean[][]>(Array(5).fill(null).map(() => Array(5).fill(false)));
+  const [board, setBoard] = useState<number[][]>([]);
+  const [marked, setMarked] = useState<boolean[][]>(Array(5).fill(null).map(() => Array(5).fill(false)));
   const [calledNumbers, setCalledNumbers] = useState<number[]>([]);
   const [currentNumber, setCurrentNumber] = useState<number | null>(null);
-  const [winner, setWinner] = useState<string | null>(null);
+  const [winner, setWinner] = useState<boolean>(false);
 
   // Sounds
   const [playNumber] = useSound('https://assets.mixkit.co/sfx/preview/mixkit-arcade-retro-changing-tab-206.mp3', { volume: 0.5 });
@@ -35,13 +33,11 @@ export default function OfflineGame() {
   }
 
   const startNewGame = () => {
-    setP1Board(generateBoard());
-    setP2Board(generateBoard());
-    setMarkedP1(Array(5).fill(null).map(() => Array(5).fill(false)));
-    setMarkedP2(Array(5).fill(null).map(() => Array(5).fill(false)));
+    setBoard(generateBoard());
+    setMarked(Array(5).fill(null).map(() => Array(5).fill(false)));
     setCalledNumbers([]);
     setCurrentNumber(null);
-    setWinner(null);
+    setWinner(false);
     setGameState('playing');
   };
 
@@ -57,20 +53,13 @@ export default function OfflineGame() {
     playNumber();
 
     // Auto mark
-    const markOnBoard = (board: number[][], marked: boolean[][]) => {
-      const newMarked = marked.map(row => [...row]);
-      board.forEach((row, ri) => {
-        row.forEach((cell, ci) => {
-          if (cell === next) newMarked[ri][ci] = true;
-        });
+    const newMarked = marked.map(row => [...row]);
+    board.forEach((row, ri) => {
+      row.forEach((cell, ci) => {
+        if (cell === next) newMarked[ri][ci] = true;
       });
-      return newMarked;
-    };
-
-    const newMarkedP1 = markOnBoard(p1Board, markedP1);
-    const newMarkedP2 = markOnBoard(p2Board, markedP2);
-    setMarkedP1(newMarkedP1);
-    setMarkedP2(newMarkedP2);
+    });
+    setMarked(newMarked);
 
     // Check Win
     const checkWin = (m: boolean[][]) => {
@@ -84,12 +73,9 @@ export default function OfflineGame() {
       return false;
     };
 
-    const p1Wins = checkWin(newMarkedP1);
-    const p2Wins = checkWin(newMarkedP2);
-
-    if (p1Wins || p2Wins) {
+    if (checkWin(newMarked)) {
       setGameState('winner');
-      setWinner(p1Wins && p2Wins ? "IT'S A DRAW!" : p1Wins ? "PLAYER 1 WINS!" : "PLAYER 2 WINS!");
+      setWinner(true);
       playWin();
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
@@ -103,7 +89,7 @@ export default function OfflineGame() {
         <button onClick={() => setLocation("/")} className="p-2 hover:bg-white/10 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-2xl font-black tracking-tighter text-neon-blue uppercase">Local PvP</h1>
+        <h1 className="text-2xl font-black tracking-tighter text-neon-blue uppercase">Offline Bingo</h1>
         <button onClick={startNewGame} className="p-2 hover:bg-white/10 rounded-full transition-colors">
           <RefreshCcw className="w-5 h-5" />
         </button>
@@ -113,28 +99,20 @@ export default function OfflineGame() {
         <div className="flex-1 flex flex-col items-center justify-center space-y-8">
           <div className="text-center space-y-4">
             <h2 className="text-4xl font-black text-white uppercase">Ready to Play?</h2>
-            <p className="text-white/50">Two unique boards. One winner. 1-25 Range.</p>
+            <p className="text-white/50">One unique board. 1-25 Range.</p>
           </div>
           <NeonButton onClick={startNewGame} className="text-xl px-12 py-8" glowColor="#ffee00">
-            START MATCH
+            START GAME
           </NeonButton>
         </div>
       ) : (
-        <main className="flex-1 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Player 1 Side */}
-          <div className="flex flex-col items-center space-y-4">
+        <main className="flex-1 max-w-2xl mx-auto w-full flex flex-col items-center">
+          {/* Single Board */}
+          <div className="flex flex-col items-center space-y-4 w-full">
             <div className="text-center py-2 px-6 bg-neon-blue/20 border border-neon-blue rounded-full">
-              <span className="font-black text-neon-blue uppercase">Player 1</span>
+              <span className="font-black text-neon-blue uppercase">Your Board</span>
             </div>
-            <BingoBoard card={p1Board} marked={markedP1} onCellClick={() => {}} disabled />
-          </div>
-
-          {/* Player 2 Side */}
-          <div className="flex flex-col items-center space-y-4">
-            <div className="text-center py-2 px-6 bg-neon-pink/20 border border-neon-pink rounded-full">
-              <span className="font-black text-neon-pink uppercase">Player 2</span>
-            </div>
-            <BingoBoard card={p2Board} marked={markedP2} onCellClick={() => {}} disabled />
+            <BingoBoard card={board} marked={marked} onCellClick={() => {}} disabled />
           </div>
 
           {/* Controls overlay */}
@@ -142,7 +120,7 @@ export default function OfflineGame() {
             <AnimatePresence mode="wait">
               {winner ? (
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="bg-neon-yellow text-black px-8 py-4 rounded-xl font-black text-2xl shadow-[0_0_30px_#ffee00]">
-                  {winner}
+                  🎉 BINGO! YOU WIN 🎉
                 </motion.div>
               ) : (
                 <div className="flex flex-col items-center gap-4">
