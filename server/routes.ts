@@ -13,10 +13,10 @@ function generateRoomCode(): string {
 
 // Bingo Number Logic
 function generateBingoNumber(calledNumbers: number[]): number | null {
-  if (calledNumbers.length >= 75) return null;
+  if (calledNumbers.length >= 25) return null;
   let num;
   do {
-    num = Math.floor(Math.random() * 75) + 1;
+    num = Math.floor(Math.random() * 25) + 1;
   } while (calledNumbers.includes(num));
   return num;
 }
@@ -24,11 +24,11 @@ function generateBingoNumber(calledNumbers: number[]): number | null {
 function generatePlayerBoard(): number[][] {
   const board: number[][] = [];
   const ranges = [
-    [1, 15],  // B
-    [16, 30], // I
-    [31, 45], // N
-    [46, 60], // G
-    [61, 75]  // O
+    [1, 5],   // B
+    [6, 10],  // I
+    [11, 15], // N
+    [16, 20], // G
+    [21, 25]  // O
   ];
 
   const columns: number[][] = [];
