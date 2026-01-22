@@ -48,7 +48,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-foreground antialiased selection:bg-neon-pink/30 selection:text-white;
+    @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
     background-color: #050505;
     background-image: 
