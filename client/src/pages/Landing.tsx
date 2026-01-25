@@ -67,7 +67,6 @@ export default function Landing() {
           >
             BINGO
           </motion.h1>
-          <p className="text-neon-blue/80 font-mono tracking-widest uppercase text-sm">Neon Edition</p>
         </div>
 
         {!isAuthenticated ? (
@@ -78,8 +77,20 @@ export default function Landing() {
             animate={{ scale: 1 }}
           >
             <div className="text-center space-y-2">
-              <h2 className="text-2xl font-bold text-white">Who are you?</h2>
-              <p className="text-muted-foreground text-sm">Enter your codename to enter the grid.</p>
+              <motion.h2 
+                className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink"
+                animate={{
+                  textShadow: [
+                    "0 0 10px rgba(0,243,255,0.8), 0 0 20px rgba(0,243,255,0.5)",
+                    "0 0 20px rgba(188,19,254,0.8), 0 0 30px rgba(188,19,254,0.5)",
+                    "0 0 20px rgba(255,19,188,0.8), 0 0 30px rgba(255,19,188,0.5)",
+                    "0 0 10px rgba(0,243,255,0.8), 0 0 20px rgba(0,243,255,0.5)"
+                  ]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                Enter your name ?
+              </motion.h2>
             </div>
             
             <Input
@@ -95,7 +106,7 @@ export default function Landing() {
               className="w-full"
               disabled={inputName.length < 2}
             >
-              Enter Grid
+              LETS PLAY GAME
             </NeonButton>
           </motion.form>
         ) : (
@@ -116,7 +127,7 @@ export default function Landing() {
                 variant="secondary"
               >
                 <Gamepad2 className="w-5 h-5" />
-                Offline Mode (PvP)
+                Offline Mode
               </NeonButton>
               
               <div className="h-px bg-white/10 my-4" />
@@ -161,7 +172,7 @@ export default function Landing() {
 
       {/* Footer Decoration */}
       <div className="absolute bottom-4 left-0 right-0 text-center text-white/10 text-xs font-mono">
-        SYSTEM READY // V.2.0.4
+        © Biranchi Creativity ❤️
       </div>
     </div>
   );

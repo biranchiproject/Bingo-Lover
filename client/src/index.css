@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ================= ROOT THEME ================= */
 :root {
   --background: 240 10% 3.9%;
   --foreground: 0 0% 98%;
@@ -11,51 +12,31 @@
   --card: 240 10% 3.9%;
   --card-foreground: 0 0% 98%;
 
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-
   --primary: 262 83% 58%;
-  --primary-foreground: 210 40% 98%;
-
   --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
-
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
-
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
 
   --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 240 4.9% 83.9%;
-  
   --radius: 0.75rem;
 
-  /* Custom Neon Palette */
+  /* Neon palette */
   --neon-blue: #00f3ff;
   --neon-pink: #ff00ff;
   --neon-yellow: #ffee00;
   --neon-purple: #bc13fe;
   --neon-green: #0aff00;
-  
+
   --font-display: 'Oxanium', sans-serif;
   --font-body: 'Outfit', sans-serif;
+
+  --neon-cycle: #ffee00;
+  --neon-contrast: #00f3ff;
 }
 
+/* ================= BASE ================= */
 @layer base {
-  :root {
-    --neon-cycle: #ffee00;
-    --neon-contrast: #00f3ff;
-  }
-
   body {
-    @apply bg-black text-foreground antialiased;
+    @apply bg-black text-white antialiased;
     font-family: var(--font-body);
-    background-color: #000;
     overflow: hidden;
   }
 
@@ -65,122 +46,280 @@
   }
 }
 
-@layer utilities {
-  .page-border-glow {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    border: 4px solid var(--neon-cycle);
-    box-shadow: 
-      inset 0 0 20px var(--neon-cycle),
-      0 0 20px var(--neon-cycle);
-    z-index: 9999;
-    transition: border-color 1s ease, box-shadow 1s ease;
+/* ================= NEON ANIMATIONS ================= */
+@keyframes neon-color-cycle {
+  0% {
+    --neon-cycle: #ffee00;
+    --neon-contrast: #00f3ff;
   }
-
-  .animate-neon-cycle {
-    animation: neon-color-cycle 20s linear infinite;
+  25% {
+    --neon-cycle: #00f3ff;
+    --neon-contrast: #ff00ff;
   }
-
-  /* Falling Cubes Background */
-  .falling-cubes-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -5;
-    overflow: hidden;
+  50% {
+    --neon-cycle: #ff00ff;
+    --neon-contrast: #0aff00;
   }
-
-  .cube {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--neon-cycle);
-    box-shadow: 0 0 10px var(--neon-cycle);
-    opacity: 0.3;
-    top: -50px;
-    animation: fall linear infinite;
-    transition: border-color 1s ease, box-shadow 1s ease;
+  75% {
+    --neon-cycle: #0aff00;
+    --neon-contrast: #ffee00;
   }
-
-  @keyframes fall {
-    0% {
-      transform: translateY(0) rotate(0deg);
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.3;
-    }
-    90% {
-      opacity: 0.3;
-    }
-    100% {
-      transform: translateY(110vh) rotate(360deg);
-      opacity: 0;
-    }
+  100% {
+    --neon-cycle: #ffee00;
+    --neon-contrast: #00f3ff;
   }
 }
 
+/* ================= BACKGROUND NEON PULSE ================= */
+@keyframes bg-neon-pulse {
+  0% {
+    background-color: rgba(0, 0, 0, 1);
+    box-shadow: inset 0 0 80px rgba(0, 243, 255, 0.15), inset 0 0 120px rgba(0, 243, 255, 0.1);
+  }
+  25% {
+    background-color: rgba(0, 243, 255, 0.03);
+    box-shadow: inset 0 0 100px rgba(0, 243, 255, 0.25), inset 0 0 150px rgba(0, 243, 255, 0.15);
+  }
+  50% {
+    background-color: rgba(0, 0, 0, 1);
+    box-shadow: inset 0 0 80px rgba(188, 19, 254, 0.2), inset 0 0 120px rgba(188, 19, 254, 0.12);
+  }
+  75% {
+    background-color: rgba(188, 19, 254, 0.03);
+    box-shadow: inset 0 0 100px rgba(188, 19, 254, 0.3), inset 0 0 150px rgba(188, 19, 254, 0.18);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 1);
+    box-shadow: inset 0 0 80px rgba(0, 243, 255, 0.15), inset 0 0 120px rgba(0, 243, 255, 0.1);
+  }
+}
+
+.game-bg-neon-pulse {
+  animation: bg-neon-pulse 5s ease-in-out infinite;
+}
+
+.animate-neon-cycle {
+  animation: neon-color-cycle 18s linear infinite;
+}
+
+/* ================= PAGE BORDER ================= */
+.page-border-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  border: 4px solid var(--neon-cycle);
+  box-shadow:
+    inset 0 0 25px var(--neon-cycle),
+    0 0 30px var(--neon-cycle);
+  z-index: 9999;
+  transition: border-color 1s linear, box-shadow 1s linear;
+}
+
+/* ================= FALLING CUBES ================= */
+.falling-cubes-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -5;
+  overflow: hidden;
+}
+
+.cube {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--neon-cycle);
+  box-shadow: 0 0 12px var(--neon-cycle);
+  opacity: 0.3;
+  top: -40px;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ================= NEON BORDER GLOW ================= */
+@keyframes neon-border-glow {
+  0% {
+    border-color: #00f3ff;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.8), inset 0 0 10px rgba(0, 243, 255, 0.3);
+  }
+  25% {
+    border-color: #bc13fe;
+    box-shadow: 0 0 20px rgba(188, 19, 254, 0.8), inset 0 0 10px rgba(188, 19, 254, 0.3);
+  }
+  50% {
+    border-color: #ff00ff;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), inset 0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  75% {
+    border-color: #ffee00;
+    box-shadow: 0 0 20px rgba(255, 238, 0, 0.8), inset 0 0 10px rgba(255, 238, 0, 0.3);
+  }
+  100% {
+    border-color: #00f3ff;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.8), inset 0 0 10px rgba(0, 243, 255, 0.3);
+  }
+}
+
+@keyframes win-text-color {
+  0% {
+    color: #00f3ff;
+    text-shadow: 0 0 15px rgba(0, 243, 255, 0.8), 0 0 30px rgba(0, 243, 255, 0.6);
+  }
+  25% {
+    color: #bc13fe;
+    text-shadow: 0 0 20px rgba(188, 19, 254, 0.8), 0 0 30px rgba(188, 19, 254, 0.6);
+  }
+  50% {
+    color: #ff00ff;
+    text-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(255, 0, 255, 0.6);
+  }
+  75% {
+    color: #ffee00;
+    text-shadow: 0 0 20px rgba(255, 238, 0, 0.8), 0 0 30px rgba(255, 238, 0, 0.6);
+  }
+  100% {
+    color: #00f3ff;
+    text-shadow: 0 0 15px rgba(0, 243, 255, 0.8), 0 0 30px rgba(0, 243, 255, 0.6);
+  }
+}
+
+@keyframes button-text-glow {
+  0% {
+    color: #00f3ff;
+  }
+  25% {
+    color: #bc13fe;
+  }
+  50% {
+    color: #ff00ff;
+  }
+  75% {
+    color: #ffee00;
+  }
+  100% {
+    color: #00f3ff;
+  }
+}
+
+/* ================= COMPONENTS ================= */
 @layer components {
-  .neon-text {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px var(--neon-cycle), 0 0 30px var(--neon-cycle);
-    transition: text-shadow 1s ease;
-  }
-  
-  .neon-border {
-    border-color: var(--neon-cycle);
-    box-shadow: 0 0 15px var(--neon-cycle), inset 0 0 10px var(--neon-cycle);
-    transition: border-color 1s ease, box-shadow 1s ease;
-  }
-
   .glass-panel {
-    @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-xl;
+    @apply bg-black/40 backdrop-blur-md border-2 shadow-xl;
+    animation: neon-border-glow 4s ease-in-out infinite;
   }
 
+  .neon-border {
+    border: 2px solid var(--neon-cycle);
+    box-shadow: 0 0 18px var(--neon-cycle), inset 0 0 12px var(--neon-cycle);
+    transition: border-color 1s linear, box-shadow 1s linear;
+  }
+
+  .neon-letter-glow {
+    animation: neon-border-glow 4s ease-in-out infinite;
+  }
+
+  .win-dialog-border {
+    animation: neon-border-glow 4s ease-in-out infinite;
+  }
+
+  .win-text-glow {
+    animation: win-text-color 6s ease-in-out infinite;
+  }
+
+  .restart-button-glow {
+    border: 2px solid #00f3ff !important;
+    animation: neon-border-glow 4s ease-in-out infinite !important;
+    color: #00f3ff !important;
+    animation-name: button-text-glow, neon-border-glow !important;
+    background: transparent !important;
+  }
+
+  .restart-button-glow:hover {
+    background: transparent !important;
+    color: #00f3ff !important;
+  }
+
+  .restart-button-glow:active {
+    background: transparent !important;
+    color: #00f3ff !important;
+  }
+
+  .neon-text {
+    text-shadow:
+      0 0 10px var(--neon-cycle),
+      0 0 20px var(--neon-cycle),
+      0 0 35px var(--neon-cycle);
+  }
+
+  /* ================= BINGO CELL ================= */
   .bingo-cell {
-    @apply relative flex items-center justify-center text-xl sm:text-2xl font-bold rounded-lg cursor-pointer transition-all duration-300 select-none;
+    @apply relative flex items-center justify-center font-bold rounded-lg cursor-pointer select-none transition-all duration-300;
     aspect-ratio: 1;
     font-family: var(--font-display);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.4rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: var(--neon-contrast);
-    transition: color 1s ease, border-color 1s ease, box-shadow 1s ease, background 0.3s ease;
   }
 
-  .bingo-cell:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.05);
-    z-index: 10;
+  .bingo-cell:hover {
+    transform: scale(1.07);
+    background: rgba(255, 255, 255, 0.12);
+    z-index: 5;
   }
 
   .bingo-cell.marked {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border-color: var(--neon-cycle);
     color: white;
-    box-shadow: 0 0 20px var(--neon-cycle), inset 0 0 10px var(--neon-cycle);
-    text-shadow: 0 0 10px var(--neon-cycle);
+    box-shadow:
+      0 0 22px var(--neon-cycle),
+      inset 0 0 12px var(--neon-cycle);
+    text-shadow: 0 0 12px var(--neon-cycle);
   }
-  
+
   .bingo-cell.winning-line {
     background: var(--neon-cycle);
-    border-color: #fff;
     color: #000;
-    box-shadow: 0 0 40px var(--neon-cycle), inset 0 0 20px #fff;
-    animation: pulse-win 1.5s infinite;
+    box-shadow:
+      0 0 40px var(--neon-cycle),
+      inset 0 0 20px white;
+    animation: pulse-win 1.4s infinite;
   }
 }
 
-@keyframes neon-color-cycle {
-  0%, 100% { --neon-cycle: #ffee00; --neon-contrast: #00f3ff; } /* Yellow -> Cyan */
-  20% { --neon-cycle: #ff0000; --neon-contrast: #0aff00; }     /* Red -> Green */
-  40% { --neon-cycle: #00f3ff; --neon-contrast: #ffee00; }     /* Blue -> Yellow */
-  60% { --neon-cycle: #bc13fe; --neon-contrast: #0aff00; }     /* Purple -> Green */
-  80% { --neon-cycle: #0aff00; --neon-contrast: #ff00ff; }     /* Green -> Pink */
+/* ================= WIN PULSE ================= */
+@keyframes pulse-win {
+  0% {
+    box-shadow: 0 0 20px var(--neon-blue);
+  }
+  50% {
+    box-shadow:
+      0 0 40px var(--neon-blue),
+      0 0 70px var(--neon-blue);
+  }
+  100% {
+    box-shadow: 0 0 20px var(--neon-blue);
+  }
 }
 
+/* ================= CSS PROPERTIES ================= */
 @property --neon-cycle {
   syntax: '<color>';
   initial-value: #ffee00;
@@ -192,21 +331,57 @@
   initial-value: #00f3ff;
   inherits: true;
 }
-
-@keyframes pulse-win {
-  0% { box-shadow: 0 0 15px var(--neon-blue); }
-  50% { box-shadow: 0 0 30px var(--neon-blue), 0 0 50px var(--neon-blue); }
-  100% { box-shadow: 0 0 15px var(--neon-blue); }
+/* SIDE BINGO BOX */
+.side-bingo-box {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  border: 3px solid var(--neon-cycle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--neon-contrast);
+  box-shadow:
+    0 0 15px var(--neon-cycle),
+    inset 0 0 10px var(--neon-cycle);
+  animation: neon-color-cycle 18s linear infinite;
 }
 
-@keyframes aurora-bg {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* RED NEON CROSS */
+.side-bingo-box.completed::before,
+.side-bingo-box.completed::after {
+  content: "";
+  position: absolute;
+  width: 80%;
+  height: 6px;
+  background: #ff0033;
+  top: 50%;
+  left: 10%;
+  border-radius: 4px;
+  box-shadow:
+    0 0 10px #ff0033,
+    0 0 25px #ff0033,
+    0 0 45px #ff0033;
 }
 
-.aurora-gradient {
-  background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
-  background-size: 400% 400%;
-  animation: aurora-bg 15s ease infinite;
+.side-bingo-box.completed::before {
+  transform: rotate(45deg);
+}
+
+.side-bingo-box.completed::after {
+  transform: rotate(-45deg);
+}
+
+/* CLEAR SELECTED NUMBER */
+.bingo-cell.marked {
+  background: rgba(0, 255, 120, 0.2);
+  color: #ffffff;
+  font-size: 1.4rem;
+  border-color: #0aff00;
+  box-shadow:
+    0 0 20px #0aff00,
+    inset 0 0 12px #0aff00;
 }
