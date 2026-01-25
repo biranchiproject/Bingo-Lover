@@ -3,22 +3,22 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
-export default defineConfig({
+// https://vitejs.dev/config/
+export default defineConfig(async () => ({
   plugins: [
     react(),
     runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer()
-          ),
-          await import("@replit/vite-plugin-dev-banner").then((m) =>
-            m.devBanner()
-          ),
+          (await import("@replit/vite-plugin-cartographer")).cartographer(),
+          (await import("@replit/vite-plugin-dev-banner")).devBanner(),
         ]
       : []),
   ],
+
+  // FRONTEND ROOT
+  root: path.resolve(import.meta.dirname, "client"),
 
   resolve: {
     alias: {
@@ -28,18 +28,17 @@ export default defineConfig({
     },
   },
 
-  root: path.resolve(import.meta.dirname, "client"),
-
+  // 🔥 IMPORTANT: build directly into /dist
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
   },
 
   server: {
-    port: 5173, // ✅ FIX: frontend ab 5173 pe chalega
+    port: 5173,
     fs: {
       strict: true,
       deny: ["**/.*"],
     },
   },
-});
+}));
