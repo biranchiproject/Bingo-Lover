@@ -12,7 +12,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
-      
+      <Route path="/offline" component={OfflineGame} />
       
       <Route component={NotFound} />
     </Switch>
