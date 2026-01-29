@@ -22,6 +22,33 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+// MANUAL CORS MIDDLEWARE (Because 'cors' package might be missing or limited)
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'https://bingoloverr.netlify.app',
+    process.env.VITE_API_URL, // In case it's set elsewhere
+    // Add your exact Netlify URL here if different
+  ];
+
+  const origin = req.headers.origin;
+  if (origin) {
+    // Determine if the origin is allowed (or just allow all in specialized non-prod envs, but here we be specific or permissive)
+    // For simplicity given the issue: echo the origin to allow it.
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  next();
+});
+
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",

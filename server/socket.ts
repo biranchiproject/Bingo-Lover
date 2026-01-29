@@ -23,7 +23,8 @@ export function setupSocket(httpServer: HttpServer) {
     const io = new Server(httpServer, {
         path: "/socket.io",
         cors: {
-            origin: "*", // Allow all for dev simplicity
+            origin: true, // Allow the client's origin dynamically (reflects request origin)
+            credentials: true,
             methods: ["GET", "POST"],
         },
     });
