@@ -9,16 +9,20 @@ export default defineConfig(async () => ({
     react(),
     runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
+      process.env.REPL_ID !== undefined
       ? [
-          (await import("@replit/vite-plugin-cartographer")).cartographer(),
-          (await import("@replit/vite-plugin-dev-banner")).devBanner(),
-        ]
+        (await import("@replit/vite-plugin-cartographer")).cartographer(),
+        (await import("@replit/vite-plugin-dev-banner")).devBanner(),
+      ]
       : []),
   ],
 
   // FRONTEND ROOT
   root: path.resolve(import.meta.dirname, "client"),
+
+  define: {
+    "global": "window",
+  },
 
   resolve: {
     alias: {
@@ -36,6 +40,16 @@ export default defineConfig(async () => ({
 
   server: {
     port: 5173,
+    proxy: {
+      "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+      },
+      "/socket.io": {
+        target: "http://localhost:5000",
+        ws: true,
+      }
+    },
     fs: {
       strict: true,
       deny: ["**/.*"],

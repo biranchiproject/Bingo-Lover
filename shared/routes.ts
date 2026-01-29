@@ -40,7 +40,7 @@ export const api = {
       path: '/api/rooms/join',
       input: z.object({ code: z.string(), uid: z.string() }),
       responses: {
-        200: z.custom<typeof rooms.$inferSelect>(),
+        200: z.object({ code: z.string() }),
         404: errorSchemas.notFound,
       },
     },

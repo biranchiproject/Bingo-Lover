@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Landing from "@/pages/Landing";
 import OfflineGame from "@/pages/OfflineGame";
-
+import OnlineGame from "@/pages/OnlineGame";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -13,7 +13,8 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/offline" component={OfflineGame} />
-      
+      <Route path="/room/:code" component={OnlineGame} />
+
       <Route component={NotFound} />
     </Switch>
   );

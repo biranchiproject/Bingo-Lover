@@ -385,3 +385,73 @@
     0 0 20px #0aff00,
     inset 0 0 12px #0aff00;
 }
+@layer base {
+  body {
+    @apply bg-black text-white;
+    font-family: var(--font-body);
+    overflow: hidden;
+  }
+}
+
+/* ================= MULTI COLOR NEON CYCLE (SLOW) ================= */
+@keyframes neon-color-cycle {
+  0%   { --neon-cycle: #00f3ff; }
+  25%  { --neon-cycle: #bc13fe; }
+  50%  { --neon-cycle: #ff00ff; }
+  75%  { --neon-cycle: #ffee00; }
+  100% { --neon-cycle: #00f3ff; }
+}
+
+.animate-neon-cycle {
+  animation: neon-color-cycle 5s linear infinite;
+}
+
+/* ================= PAGE BORDER ================= */
+.page-border-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  border: 4px solid var(--neon-cycle);
+  box-shadow:
+    inset 0 0 20px var(--neon-cycle),
+    0 0 28px var(--neon-cycle);
+  animation: neon-color-cycle 5s linear infinite;
+  z-index: 9999;
+}
+
+/* ================= NEON BORDER ================= */
+@keyframes neon-border-glow {
+  0% {
+    border-color: #00f3ff;
+    box-shadow: 0 0 14px #00f3ff;
+  }
+  50% {
+    border-color: #ff00ff;
+    box-shadow: 0 0 22px #ff00ff;
+  }
+  100% {
+    border-color: #00f3ff;
+    box-shadow: 0 0 14px #00f3ff;
+  }
+}
+@keyframes neonBingoFlow {
+  0%   { color:#00f3ff; text-shadow:0 0 10px #00f3ff; }
+  50%  { color:#ff00ff; text-shadow:0 0 10px #ff00ff; }
+  100% { color:#00f3ff; text-shadow:0 0 10px #00f3ff; }
+}
+
+.neon-bingo-header {
+  animation: neonBingoFlow 5s linear infinite;
+  font-weight: 900;
+}
+@keyframes neon-color-cycle {
+  0%   { --neon-cycle: #00f3ff; }
+  25%  { --neon-cycle: #bc13fe; }
+  50%  { --neon-cycle: #ff00ff; }
+  75%  { --neon-cycle: #ffee00; }
+  100% { --neon-cycle: #00f3ff; }
+}
+
+.animate-neon-cycle {
+  animation: neon-color-cycle 5s linear infinite;
+}

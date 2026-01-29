@@ -1,10 +1,10 @@
-import { pgTable, text, serial, integer, boolean, jsonb } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // User profile (persisted)
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   uid: text("uid").notNull().unique(), // Client-generated or server-generated unique ID
   name: text("name").notNull(),
   points: integer("points").default(0),
@@ -17,13 +17,13 @@ export const insertUserSchema = createInsertSchema(users).pick({
 });
 
 // Rooms for online play
-export const rooms = pgTable("rooms", {
-  id: serial("id").primaryKey(),
+export const rooms = sqliteTable("rooms", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   code: text("code").notNull().unique(),
   hostId: text("host_id").notNull(),
   status: text("status").notNull().default("waiting"), // waiting, playing, finished
   currentNumber: integer("current_number"), // Last number called
-  numbersCalled: jsonb("numbers_called").$type<number[]>().default([]),
+  numbersCalled: text("numbers_called", { mode: "json" }).$type<number[]>().default([]),
   winnerId: text("winner_id"),
 });
 
@@ -47,7 +47,7 @@ export const WS_EVENTS = {
   NUMBER_CALLED: 'number_called',
   BINGO_CLAIMED: 'bingo_claimed',
   GAME_OVER: 'game_over',
-  
+
   // WebRTC Signaling
   SIGNAL: 'signal', // offer, answer, ice-candidate
 } as const;
@@ -55,9 +55,9 @@ export const WS_EVENTS = {
 export type GameState = {
   roomCode: string;
   status: 'waiting' | 'playing' | 'finished';
-  players: { 
-    uid: string; 
-    name: string; 
+  players: {
+    uid: string;
+    name: string;
     ready: boolean;
     board?: number[][]; // Individual boards for each player
   }[];
