@@ -17,7 +17,7 @@ export default function OnlineGame() {
   // Audio Refs
   const winAudioRef = useRef<HTMLAudioElement>(null);
   const loseAudioRef = useRef<HTMLAudioElement>(null);
-  const tapAudioRef = useRef<HTMLAudioElement>(null);
+
 
   const {
     board,
@@ -35,11 +35,9 @@ export default function OnlineGame() {
   } = useOnlineGame(roomCode);
 
   // Wrap onCellClick to play sound
+  // Wrap onCellClick to play sound
   const onCellClick = (r: number, c: number) => {
-    // Play sound if valid click (basic check)
-    if (turn === "me" || (!highlightNumber && turn === "opponent")) {
-      tapAudioRef.current?.play().catch(() => { });
-    }
+    // Sound is handled efficiently in BingoBoard component
     originalOnCellClick(r, c);
   };
 
@@ -79,7 +77,7 @@ export default function OnlineGame() {
       {/* SOUNDS */}
       <audio ref={winAudioRef} src="/music/victory.mp3" />
       <audio ref={loseAudioRef} src="/music/game-over.mp3" />
-      <audio ref={tapAudioRef} src="/music/tap.mp3" />
+
 
       {/* VS SCREEN OVERLAY */}
       <AnimatePresence>

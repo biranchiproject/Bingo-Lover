@@ -9,6 +9,7 @@ import OfflineGame from "@/pages/OfflineGame";
 import OnlineGame from "@/pages/OnlineGame";
 import NotFound from "@/pages/not-found";
 import { warmUpBackend } from "./lib/warmup";
+import { ReloadPrompt } from "./components/ReloadPrompt";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        <ReloadPrompt />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>
