@@ -1,6 +1,7 @@
 {
   "name": "Bingo Lover",
   "short_name": "Bingo",
+  "description": "Play Bingo online and offline with friends.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -19,6 +20,5 @@
       "type": "image/png"
     }
   ],
-  "id": "bingo-lover",
-  "dir": "ltr"
+  "id": "bingo-lover"
 }
