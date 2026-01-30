@@ -1,3 +1,5 @@
+import { playClickSound } from "@/lib/audio";
+
 type Line =
   | { type: "row"; index: number }
   | { type: "col"; index: number }
@@ -45,7 +47,12 @@ export function BingoBoard({
             return (
               <button
                 key={`${r}-${c}`}
-                onClick={() => !disabled && onCellClick(r, c)}
+                onClick={() => {
+                  if (!disabled) {
+                    playClickSound();
+                    onCellClick(r, c);
+                  }
+                }}
                 disabled={disabled}
                 className={`relative bingo-cell ${marked[r]?.[c] ? "marked" : ""
                   } ${isHighlighted ? "animate-pulse border-red-500 shadow-[0_0_20px_red] text-red-500" : ""}`}
